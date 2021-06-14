@@ -1,0 +1,7 @@
+{
+  "challenge_id": "neurips-2021-minerl-diamond-competition",
+  "authors": ["aicrowd-bot"],
+  "tags": "change-me",
+  "description": "Test Model for MineRL Challenge",
+  "gpu": false
+}
