@@ -15,7 +15,7 @@ See [the homepage](https://minerl.io/basalt/) of the competition for further det
 *  **Starter code** for you to base your submission (an agent that takes random actions)!
 
 **Other Resources**:
-- [AICrowd competition page](https://www.aicrowd.com/challenges/neurips-2021-minerl-competition) - Main registration page & leaderboard.
+- [AICrowd competition page](https://www.aicrowd.com/challenges/neurips-2021-minerl-basalt-competition) - Main registration page & leaderboard.
 - [MineRL Documentation](http://minerl.io/docs) - Documentation for the `minerl` package!
 
 # How to Submit a Model on AICrowd.
@@ -23,6 +23,8 @@ See [the homepage](https://minerl.io/basalt/) of the competition for further det
 In brief: you define your Python environment using Anaconda environment files, and AICrowd system will build a Docker image and run your code using the docker scripts inside the `utility` directory.
 
 You submit pretrained models, the evaluation code and the training code. Training code should produce the same models you upload as part of your submission.
+
+Your evaluation code (`test_submission_code.py`) only needs to control the agent and accomplish the environment's task. The evaluation server will handle recording of videos.
 
 ## Setup
 
@@ -149,11 +151,11 @@ and if everything works out correctly, then you should be able to see the final 
 
 **Best of Luck** :tada: :tada:
 
-# Ensuring that your training code works.
+# Ensuring that your code works.
 
 You can perform local training and evaluation using utility scripts shared in this directory. To mimic the online training phase you can run `./utility/train_locally.sh` from repository root, you can specify `--verbose` for complete logs.
 
-For local evaluation of your code, you can use `./utility/evaluation_locally.sh`, add `--verbose` if you want to view complete logs. 
+For local evaluation of your code, you can use `./utility/evaluation_locally.sh`, add `--verbose` if you want to view complete logs. **Note** that you do not need to record videos in your code! AICrowd server will handle this. Your code only needs to play the games.
 
 For running/testing your submission in a docker environment (identical to the online submission), you can use `./utility/docker_train_locally.sh` and `./utility/docker_evaluation_locally.sh`. You can also run docker image with bash entrypoint for debugging on the go with the help of `./utility/docker_run.sh`. These scripts respect following parameters:
 

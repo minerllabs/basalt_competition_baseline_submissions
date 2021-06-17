@@ -35,11 +35,6 @@ class MineRLAgent():
 
     By default this agent behaves like a random agent: pick random action on
     each step.
-
-    NOTE:
-        This class enables the evaluator to run your agent in parallel in Threads,
-        which means anything loaded in load_agent will be shared among parallel
-        agents. Take care when tracking e.g. hidden state (this should go to run_agent_on_episode).
     """
 
     def load_agent(self):
@@ -61,12 +56,6 @@ class MineRLAgent():
             while not done:
                 env.step(self.agent.act(obs))
                 ...
-
-        NOTE:
-            This method will be called in PARALLEL during evaluation.
-            So, only store state in LOCAL variables.
-            For example, if using an LSTM, don't store the hidden state in the class
-            but as a local variable to the method.
 
         Args:
             env (gym.Env): The env your agent should interact with.

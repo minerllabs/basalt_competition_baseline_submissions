@@ -14,14 +14,17 @@ coloredlogs.install(logging.DEBUG)
 MINERL_TRAINING_MAX_INSTANCES = int(os.getenv('MINERL_TRAINING_MAX_INSTANCES', 5))
 # The dataset is available in data/ directory from repository root.
 MINERL_DATA_ROOT = os.getenv('MINERL_DATA_ROOT', 'data/')
+# You need to ensure that your submission is trained within allowed training time.
+MINERL_TRAINING_TIMEOUT = int(os.getenv('MINERL_TRAINING_TIMEOUT_MINUTES', 4 * 24 * 60))
+# You need to ensure that your submission is trained by launching less than MINERL_TRAINING_MAX_INSTANCES instances
+MINERL_TRAINING_MAX_INSTANCES = int(os.getenv('MINERL_TRAINING_MAX_INSTANCES', 5))
 
 # Optional: You can view best effort status of your instances with the help of parser.py
-# This will give you current state like number of steps completed, instances launched and so on. Make your you keep a tap on the numbers to avoid breaching any limits.
+# This will give you current state like number of steps completed, instances launched and so on.
+# Make your you keep a tap on the numbers to avoid breaching any limits.
 parser = Parser(
     'performance/',
-    allowed_environment=MINERL_GYM_ENV,
     maximum_instances=MINERL_TRAINING_MAX_INSTANCES,
-    maximum_steps=MINERL_TRAINING_MAX_STEPS,
     raise_on_error=False,
     no_entry_poll_timeout=600,
     submission_timeout=MINERL_TRAINING_TIMEOUT * 60,
@@ -36,10 +39,10 @@ def main():
     """
     # How to sample minerl data is document here:
     # http://minerl.io/docs/tutorials/data_sampling.html
-    data = minerl.data.make(MINERL_GYM_ENV, data_dir=MINERL_DATA_ROOT)
+    data = minerl.data.make('MineRLBasaltFindCave-v0', data_dir=MINERL_DATA_ROOT)
 
     # Sample code for illustration, add your training code below
-    env = gym.make(MINERL_GYM_ENV)
+    env = gym.make('MineRLBasaltFindCave-v0')
 
     # For an example, lets just run one episode of MineRL for training
     obs = env.reset()
@@ -55,16 +58,9 @@ def main():
         # To fetch latest information from instance manager, you can run below when you want to know the state
         #>> parser.update_information()
         #>> print(parser.payload)
-        # .payload: provide AIcrowd generated json
-        # Example: {'state': 'RUNNING', 'score': {'score': 0.0, 'score_secondary': 0.0}, 'instances': {'1': {'totalNumberSteps': 2001, 'totalNumberEpisodes': 0, 'currentEnvironment': 'MineRLObtainDiamond-v0', 'state': 'IN_PROGRESS', 'episodes': [{'numTicks': 2001, 'environment': 'MineRLObtainDiamond-v0', 'rewards': 0.0, 'state': 'IN_PROGRESS'}], 'score': {'score': 0.0, 'score_secondary': 0.0}}}}
-        # .current_state: provide indepth state information avaiable as dictionary (key: instance id)
 
     # Save trained model to train/ directory
     # For a demonstration, we save some dummy data.
-    # NOTE: During Round 1 submission you upload trained agents as part of the git repository.
-    #       The training code is only ran for 5 minutes (i.e. no proper training), so you might
-    #       want to avoid overwriting any existing files here!
-    #       Remember to enable it for Round 2 submission, though!
     np.save("./train/parameters.npy", np.random.random((10,)))
 
     # Training 100% Completed
