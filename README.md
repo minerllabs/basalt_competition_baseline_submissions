@@ -2,7 +2,6 @@
 
 [![Discord](https://img.shields.io/discord/565639094860775436.svg)](https://discord.gg/BT9uegr)
 
-
 This repository is the main MineRL BASALT 2021 Competition **submission template and starter kit**!
 
 MineRL BASALT is a competition on solving human-judged tasks. The tasks in this competition do not have a pre-defined reward function: the goal is to produce trajectories that are judged by real humans to be effective at solving a given task.
@@ -25,6 +24,8 @@ In brief: you define your Python environment using Anaconda environment files, a
 You submit pretrained models, the evaluation code and the training code. Training code should produce the same models you upload as part of your submission.
 
 Your evaluation code (`test_submission_code.py`) only needs to control the agent and accomplish the environment's task. The evaluation server will handle recording of videos.
+
+You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` field (see below).
 
 ## Setup
 
@@ -100,12 +101,15 @@ The `aicrowd.json` of each submission should contain the following content:
   "challenge_id": "neurips-2021-minerl-basalt-competition",
   "authors": ["your-aicrowd-username"],
   "description": "sample description about your awesome agent",
+  "tags": ["FindCave", "MakeWaterfall", "CreateVillageAnimalPen", "BuildVillageHouse"],
   "license": "MIT",
   "gpu": true
 }
 ```
 
 This JSON is used to map your submission to the said challenge, so please remember to use the correct `challenge_id` as specified above.
+
+You can specify which tasks you want to be re-evaluated with the `tags` field by specifying the list of tags. If a task is not included in this list, your current submission for that task will _not_ be updated.
 
 Please specify if your code will use a GPU or not for the evaluation of your model. If you specify `true` for the GPU, a **NVIDIA Tesla K80 GPU** will be provided and used for the evaluation.
 

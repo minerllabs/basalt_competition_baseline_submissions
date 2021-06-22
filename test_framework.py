@@ -13,7 +13,7 @@ from test_submission_code import MineRLAgent, Episode, EpisodeDone
 import coloredlogs
 coloredlogs.install(logging.DEBUG)
 
-MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLBasaltFindCave-v0')
+MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV')
 MINERL_MAX_EVALUATION_EPISODES = int(os.getenv('MINERL_MAX_EVALUATION_EPISODES', 5))
 # We only use one evaluation thread
 EVALUATION_THREAD_COUNT = 1
