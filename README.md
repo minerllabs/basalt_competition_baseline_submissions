@@ -53,7 +53,7 @@ Your evaluation code (`test_submission_code.py`) only needs to control the agent
             ```
 
       * **Your code specific dependencies**
-        Add your own dependencies to the `environment.yml` file. **Remember to add any additional channels**. PyTorch requires channel `pytorch`, for example.
+        Add your own dependencies to the `environment.yml` file. **Remember to add any additional channels**. PyTorch requires the channel `pytorch`, for example.
         You can also install them locally using
         ```sh
         conda install <your-package>
@@ -111,7 +111,7 @@ Please specify if your code will use a GPU or not for the evaluation of your mod
 
 ### Dataset location
 
-You **don't** need to upload the MineRL dataset in submission and it will be provided in online submissions at `MINERL_DATA_ROOT` path, should you need it. For local training and evaluations, you can download it once in your system via `python ./utility/verify_or_download_data.py` or place manually into `./data/` folder.
+You **don't** need to upload the MineRL dataset in submission and it will be provided in online submissions at `MINERL_DATA_ROOT` path, should you need it. For local training and evaluations, you can download it once in your system via `python ./utility/verify_or_download_data.py` or place manually into the `./data/` folder.
 
 ## How to submit!
 
@@ -145,7 +145,7 @@ You now should be able to see the details of your submission at: `https://gitlab
 
 # Ensuring that your code works.
 
-You can perform local training and evaluation using utility scripts shared in this directory. To mimic the online training phase you can run `./utility/train_locally.sh` from repository root, you can specify `--verbose` for complete logs.
+You can perform local training and evaluation using utility scripts shared in this directory. To mimic the online training phase you can run `./utility/train_locally.sh` from the repository root, you can specify `--verbose` for complete logs.
 
 For local evaluation of your code, you can use `./utility/evaluation_locally.sh`, add `--verbose` if you want to view complete logs. **Note** that you do not need to record videos in your code! AICrowd server will handle this. Your code only needs to play the games.
 
