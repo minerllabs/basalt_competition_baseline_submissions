@@ -141,14 +141,6 @@ git push aicrowd submission-v0.1
 
 You now should be able to see the details of your submission at: `https://gitlab.aicrowd.com/<YOUR_AICROWD_USER_NAME>/basalt_competition_submission_template/issues/`
 
-**NOTE**: Remember to update your username in the link above :wink:
-
-In the link above, you should start seeing something like this take shape (each of the steps can take a bit of time, so please be patient too :wink: ) :
-![](https://i.imgur.com/FqScw4m.png)
-
-and if everything works out correctly, then you should be able to see the final scores like this :
-![](https://i.imgur.com/u00qcif.png)
-
 **Best of Luck** :tada: :tada:
 
 # Ensuring that your code works.
