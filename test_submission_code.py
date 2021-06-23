@@ -1,7 +1,7 @@
 import gym
 import torch as th
 from basalt_baselines.bc import bc_baseline, WRAPPERS as bc_wrappers
-
+import numpy as np
 
 class EpisodeDone(Exception):
     pass
@@ -88,11 +88,10 @@ class MineRLBehavioralCloningAgent(MineRLAgent):
         obs = single_episode_env.reset()
         done = False
         while not done:
-            breakpoint()
             # TODO this is currently erroring
-            action, _, _ = self.policy.forward(th.from_numpy(obs).unsqueeze(0))
+            action, _, _ = self.policy.forward(th.from_numpy(obs.copy()).unsqueeze(0))
             try:
-                obs, reward, done, _ = single_episode_env.step(th.squeeze(action))
+                obs, reward, done, _ = single_episode_env.step(np.squeeze(action.numpy()))
             except EpisodeDone:
                 done = True
                 continue
