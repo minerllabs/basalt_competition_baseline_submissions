@@ -16,4 +16,4 @@ dependencies:
     - matplotlib
     - pyro4
     - git+git://github.com/HumanCompatibleAI/imitation@master#egg=imitation
-    - basalt_utils/
+    - ./basalt_utils
