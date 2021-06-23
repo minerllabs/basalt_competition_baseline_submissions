@@ -34,20 +34,6 @@ def main():
 
     # Ensure that videos are closed properly
 
-    # wrapped_env = wrap_env(env, bc_wrappers)
-    # obs = wrapped_env.reset()
-    # done = False
-    # policy = th.load("train/trained_policy.pt")
-    # policy.eval()
-    # while not done:
-    #     # TODO this is currently erroring
-    #     obs_tensor = th.from_numpy(obs.copy()).unsqueeze(0)
-    #     action, _, _ = policy.forward(obs_tensor)
-    #     try:
-    #         obs, reward, done, _ = wrapped_env.step(np.squeeze(action.numpy()))
-    #     except EpisodeDone:
-    #         done = True
-    #         continue
     agent.run_agent_on_episode(Episode(env))
     @atexit.register
     def cleanup_env():
