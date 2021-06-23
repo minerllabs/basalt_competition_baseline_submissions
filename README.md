@@ -41,6 +41,16 @@ or `with mode='test'`. You can also experiment with different configuration para
 a new value of anything defined in the config method (mentioned in (1)). For example, you could call 
 `basalt_baselines.bc.py with batch_size=16` 
 
+This BC baseline is meant to be simple and minimal, and, as such, it tries to make the simplest design choices that allow 
+it to handle the structure of a Minecraft environment. These include: 
+- Extracting only the pixel POV observation, and using a CNN on that observation as the input to the BC model 
+- Turning the continuous camera action into discretely chunked left/right and up/down movements, since otherwise 
+the scale of the log likelihood for the continuous space swamps the discrete spaces 
+- Constructing separate action distributions for each of the actions that make up a joint Minecraft action (which can be
+a mix of Discrete and Box), and combining those action distributions into one MultiModalActionDistribution that is used 
+to predict the actions being predicted for BC (by sampling independently from each action space's distribution)
+- This action distribution architecture works by learning a single latent vector, and then feeding that representation 
+to a head mapping it into the parameters required by each action's distribution 
 # How to Submit a Model on AICrowd.
 
 In brief: you define your Python environment using Anaconda environment files, and AICrowd system will build a Docker image and run your code using the docker scripts inside the `utility` directory.
@@ -58,24 +68,32 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
     git clone https://github.com/minerllabs/basalt_competition_submission_template.git
     ```
 
-2. **Install** competition specific dependencies! **Make sure you have the [JDK 8 installed first](http://minerl.io/docs/tutorials/getting_started.html)!**
+2. **Install** the Java JDK! **Make sure you have the [JDK 8 installed first](http://minerl.io/docs/tutorials/getting_started.html)!**
     ```
-    # 1. Make sure to install the JDK first
-    # -> Go to http://minerl.io/docs/tutorials/getting_started.html
-
-    # 2. Install the `minerl` package and its dependencies.
-    ```
+    -> Go to http://minerl.io/docs/tutorials/getting_started.html
 
 
-3. **Specify** your specific submission dependencies (PyTorch, Tensorflow, kittens, puppies, etc.)
 
-    * **Anaconda Environment**. To make a submission you need to specify the environment using Anaconda environment files. It is also recommended you recreate the environment on your local machine. Make sure at least version `4.5.11` is required to correctly populate `environment.yml` (By following instructions [here](https://www.anaconda.com/download)). Then:
+3. **Specify** your specific submission dependencies (PyTorch, Tensorflow, etc)
+
+    * **Anaconda Environment**. To run this baseline code on your local machine, you will need to
+     create an environment with the correct dependencies on your local machine. We recommend `anaconda` for this 
+     purpose, and have included an `environment.yml` file specifying necessary dependencies to run our BC baseline. 
+     Make sure at least version `4.5.11`  of `anaconda` is installed (By following instructions [here](https://www.anaconda.com/download)). 
+     
+     Also, if you are not on a machine with NVIDIA drivers that can support `cudatoolkit=10.2`, remove that dependency 
+     from the `environment.yml` file before trying to install
+     
+     Then:
        * **Create your new conda environment**
 
             ```sh
             conda-env create -f environment.yml
             conda activate basalt
             ```
+            
+            This will install the `minerl` environment (containing all of the competition environments), as well as 
+            dependencies used in the training of the baselines themselves. 
 
       * **Your code specific dependencies**
         Add your own dependencies to the `environment.yml` file. **Remember to add any additional channels**. PyTorch requires the channel `pytorch`, for example.

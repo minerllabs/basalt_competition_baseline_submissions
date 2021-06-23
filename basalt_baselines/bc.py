@@ -24,7 +24,7 @@ from time import time
 
 bc_baseline = Experiment("basalt_bc_baseline")
 
-WRAPPERS = [
+WRAPPERS = [# Maps from a string version of enum (found in the dataset) to an int version (expected for spaces.Discrete)
             (wrapper_utils.EnumStrToIntWrapper, dict()),
             # Transforms continuous camera action into discrete up/down/no-change buckets on both pitch and yaw
             (wrapper_utils.CameraDiscretizationWrapper, dict()),
@@ -48,7 +48,7 @@ def default_config():
     train_epochs = None
     log_interval = 1
     # TODO fix this
-    data_root = os.getenv('MINERL_DATA_ROOT', "/Users/cody/Code/il-representations/data/minecraft")
+    data_root = os.getenv('MINERL_DATA_ROOT')
     # SpaceFlatteningActorCriticPolicy is a policy that supports a flattened Dict action space by
     # maintaining multiple sub-distributions and merging their results
     policy_class = SpaceFlatteningActorCriticPolicy
@@ -70,12 +70,14 @@ def default_config():
     _ = locals()
     del _
 
+
 @bc_baseline.config
 def default_save_dir(save_dir_base, save_dir, task_name):
     if save_dir is None:
         save_dir = os.path.join(save_dir_base, task_name, make_unique_timestamp())
     _ = locals()
     del _
+
 
 @bc_baseline.named_config
 def normal_policy_class():
@@ -124,16 +126,21 @@ def train_bc(task_name, batch_size, data_root, wrappers, train_epochs, n_traj, l
     assert not (train_batches is None and train_epochs is None), \
         "You cannot have both train_epochs and train_epochs set to None"
 
-    # This `get_data_pipeline_and_env` utility is designed to be shared across multiple baselines
-    # It takes in a task name, data root, and set of wrappers and returns
-    # TODO clean up this documentation
-    # (1) A "Dummy Env", i.e. an env with the same environment spaces as you'd getting from making the env associated
-    #     with this task and wrapping it in `wrappers`, but without having to actually start up Minecraft
-    # (2) A MineRL DataPipeline that can be used to construct a batch_iter used by BC, and also as a handle to clean
-    #     up that iterator after training.
+    # If you've set the `save_videos` flag, add a VideoRecordingWrapper with a directory set
+    # to the current `save_dir` to the environment wrappers
     if save_videos:
         wrappers = [(VideoRecordingWrapper, {'video_directory':
                                                  os.path.join(save_dir, 'videos')})] + wrappers
+
+    # This `get_data_pipeline_and_env` utility is designed to be shared across multiple baselines
+    # It takes in a task name, data root, and set of wrappers and returns
+
+    # (1) An env object with the same environment spaces as you'd getting from making the env associated
+    #     with this task and wrapping it in `wrappers`. Depending on the parameter passed into `dummy`, this is
+    #     either the real wrapped environment, or a dummy environment that displays the same spaces,
+    #     but without having to actually start up Minecraft
+    # (2) A MineRL DataPipeline that can be used to construct a batch_iter used by BC, and also as a handle to clean
+    #     up that iterator after training.
     data_pipeline, wrapped_env = utils.get_data_pipeline_and_env(task_name, data_root, wrappers,
                                                                  dummy=not use_rollout_callback)
 
