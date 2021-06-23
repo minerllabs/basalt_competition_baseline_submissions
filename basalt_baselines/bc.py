@@ -33,10 +33,6 @@ WRAPPERS = [
             # Pull out only the POV observation from the observation space; transpose axes for SB3 compatibility
             (utils.ExtractPOVAndTranspose, dict())] #,
 
-            # Add a time limit to the environment (only relevant for testing)
-            # utils.Testing10000StepLimitWrapper,
-            # wrapper_utils.FrameSkip]
-
 
 def make_unique_timestamp() -> str:
     """Make a timestamp along with a random word descriptor: e.g. 2021-06-06_1236_boring_wozniac"""
@@ -63,10 +59,11 @@ def default_config():
     use_rollout_callback = False
     callback_batch_interval = 1000
     callback_rollouts = 5
-    save_videos = False
+    save_videos = True
     mode = 'train'
     test_policy_path = None
     test_n_rollouts = None
+    # Note that `batch_size` needs to be less than the number of trajectories available for the task you're training on
     batch_size = 32
     n_traj = None
     lr = 1e-4
