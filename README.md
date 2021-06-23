@@ -51,7 +51,7 @@ to get baselines to work]
 
             ```sh
             conda env create -f environment.yml 
-            conda activate minerl
+            conda activate basalt
             ```
 
       * **Your code specific dependencies**
