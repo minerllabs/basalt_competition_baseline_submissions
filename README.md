@@ -28,7 +28,6 @@ Your evaluation code (`test_submission_code.py`) only needs to control the agent
 You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` field (see below).
 
 ## Setup
-
 1.  **Clone the github repository** or press the "Use this Template" button on GitHub!
 
     ```
@@ -43,6 +42,8 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
     # 2. Install the `minerl` package and its dependencies.
     ```
 
+[Temporary Note, 6.22.2021: You need to install dependencies from requirements.txt, and also navigate into `basalt_utils` and `pip install .`
+to get baselines to work]
 3. **Specify** your specific submission dependencies (PyTorch, Tensorflow, kittens, puppies, etc.)
 
     * **Anaconda Environment**. To make a submission you need to specify the environment using Anaconda environment files. It is also recommended you recreate the environment on your local machine. Make sure at least version `4.5.11` is required to correctly populate `environment.yml` (By following instructions [here](https://www.anaconda.com/download)). Then:

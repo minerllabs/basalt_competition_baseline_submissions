@@ -1,5 +1,7 @@
 import gym
-
+import torch as th
+from basalt_baselines.bc import bc_baseline, WRAPPERS as bc_wrappers
+import numpy as np
 
 class EpisodeDone(Exception):
     pass
@@ -24,6 +26,12 @@ class Episode(gym.Env):
             raise EpisodeDone()
         else:
             return s, r, d, i
+
+    def wrap_env(self, wrappers):
+        for wrapper, kwargs in wrappers:
+            self.env = wrapper(self.env, **kwargs)
+        self.action_space = self.env.action_space
+        self.observation_space = self.env.observation_space
 
 
 class MineRLAgent():
@@ -67,3 +75,23 @@ class MineRLAgent():
         while not done:
             random_act = single_episode_env.action_space.sample()
             single_episode_env.step(random_act)
+
+class MineRLBehavioralCloningAgent(MineRLAgent):
+    def load_agent(self):
+        # TODO not sure how to get us to be able to load the policy from the right agent here
+        self.policy = th.load("train/trained_policy.pt")
+        self.policy.eval()
+
+    def run_agent_on_episode(self, single_episode_env : Episode):
+        # TODO Get wrappers actually used in BC training, and wrap environment with those
+        single_episode_env.wrap_env(bc_wrappers)
+        obs = single_episode_env.reset()
+        done = False
+        while not done:
+            # TODO this is currently erroring
+            action, _, _ = self.policy.forward(th.from_numpy(obs.copy()).unsqueeze(0))
+            try:
+                obs, reward, done, _ = single_episode_env.step(np.squeeze(action.numpy()))
+            except EpisodeDone:
+                done = True
+                continue

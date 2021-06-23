@@ -1,0 +1,5 @@
+git+git://github.com/HumanCompatibleAI/imitation@master#egg=imitation
+git+git://github.com/HumanCompatibleAI/stable-baselines3@ad902dd5f9d4afeef347897cb04c48a19a659ca3#egg=stable_baselines3
+git+git://github.com/minerllabs/minerl@dev#egg=stable_baselines3
+torchvision
+namesgenerator
