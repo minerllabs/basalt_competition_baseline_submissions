@@ -1,8 +1,9 @@
-# NeurIPS 2021: MineRL BASALT Competition Starter Kit
+# NeurIPS 2021: MineRL BASALT Behavioral Cloning Baseline 
 
 [![Discord](https://img.shields.io/discord/565639094860775436.svg)](https://discord.gg/BT9uegr)
 
-This repository is the main MineRL BASALT 2021 Competition **submission template and starter kit**!
+This repository provides an example of how to integrate a solution based on Behavioral Cloning into the submission kit 
+for the 2021 MineRL BASALT competition.
 
 MineRL BASALT is a competition on solving human-judged tasks. The tasks in this competition do not have a pre-defined reward function: the goal is to produce trajectories that are judged by real humans to be effective at solving a given task.
 
@@ -11,11 +12,34 @@ See [the homepage](https://minerl.io/basalt/) of the competition for further det
 **This repository contains**:
 *  **Documentation** on how to submit your agent to the leaderboard
 *  **The procedure** for Round 1 and Round 2
-*  **Starter code** for you to base your submission (an agent that takes random actions)!
+*  **Starter code** that uses the [imitation](https://github.com/HumanCompatibleAI/imitation/) implementation of Behavioral Cloning to train a simple agent.
 
 **Other Resources**:
 - [AICrowd competition page](https://www.aicrowd.com/challenges/neurips-2021-minerl-basalt-competition) - Main registration page & leaderboard.
 - [MineRL Documentation](http://minerl.io/docs) - Documentation for the `minerl` package!
+- [Imitation Documentation](https://imitation.readthedocs.io/en/latest/) - Documentation for the `imitation` package, which 
+trains imitation-based models in the style of Stable Baselines 3 
+- [Sacred Documentation](https://sacred.readthedocs.io/en/stable/) - Documentation for the `sacred` package, which is used to 
+structure and define configurations for experiments 
+
+# Code Structure 
+## basalt_utils 
+This section of the repo is structured as a small utility package, containing wrappers, tools, and compatibility wrappers 
+that allow us to more easily train on top of BASALT environments. It should be automatically installed by following the 
+setup instructions and originating a conda environment from `environment.yml`, but can also be installed manually by navigating 
+into the directory and calling `pip install .`
+## basalt_baselines 
+This section of the repo is where the actual logic of a Behavioral Cloning training procedure is laid out, specifically in 
+`basalt_baselines/bc.py`; other baselines are current works in progress.  
+
+The training procedure is structure as a Sacred experiment. The most salient things to know about this are: 
+1. Configuration values specified in the method decorated with `@bc_baseline.config` (in this case, `default_config`), 
+are automatically made available to any functions decorated with `@bc_baseline.capture`, `@bc_baseline.main`, or 
+`bc_baseline.automain`. 
+2. If you want to run the testing or training code directly, you can call `basalt_baselines/bc.py with mode='train'`
+or `with mode='test'`. You can also experiment with different configuration parameters on the command line by specifying 
+a new value of anything defined in the config method (mentioned in (1)). For example, you could call 
+`basalt_baselines.bc.py with batch_size=16` 
 
 # How to Submit a Model on AICrowd.
 
