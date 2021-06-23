@@ -6,9 +6,12 @@ import aicrowd_helper
 import gym
 import minerl
 from utility.parser import Parser
+from basalt_baselines.bc import bc_baseline
+
 
 import coloredlogs
 coloredlogs.install(logging.DEBUG)
+
 
 # You need to ensure that your submission is trained by launching less than MINERL_TRAINING_MAX_INSTANCES instances
 MINERL_TRAINING_MAX_INSTANCES = int(os.getenv('MINERL_TRAINING_MAX_INSTANCES', 5))
@@ -18,6 +21,9 @@ MINERL_DATA_ROOT = os.getenv('MINERL_DATA_ROOT', 'data/')
 MINERL_TRAINING_TIMEOUT = int(os.getenv('MINERL_TRAINING_TIMEOUT_MINUTES', 4 * 24 * 60))
 # You need to ensure that your submission is trained by launching less than MINERL_TRAINING_MAX_INSTANCES instances
 MINERL_TRAINING_MAX_INSTANCES = int(os.getenv('MINERL_TRAINING_MAX_INSTANCES', 5))
+
+BASALT_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLBasaltFindCave-v0')
+
 
 # Optional: You can view best effort status of your instances with the help of parser.py
 # This will give you current state like number of steps completed, instances launched and so on.
@@ -32,7 +38,7 @@ parser = Parser(
 )
 
 
-def main():
+def basic_train():
     """
     This function will be called for training phase.
     This should produce and save same files you upload during your submission.
@@ -68,5 +74,13 @@ def main():
     env.close()
 
 
+def main():
+    # Documentation for BC Baseline can be found in train_bc.py
+    # TODO make this configurable once we have multiple baselines
+    TRAINING_EXPERIMENT = bc_baseline
+    TRAINING_EXPERIMENT.run(config_updates={'data_root': MINERL_DATA_ROOT,
+                                            'task_name': BASALT_GYM_ENV,
+                                            'train_batches': 10,
+                                            'save_dir': "train"})
 if __name__ == "__main__":
     main()
