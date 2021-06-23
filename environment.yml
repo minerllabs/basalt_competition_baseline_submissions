@@ -1,4 +1,4 @@
-name: minerl
+name: basalt
 channels:
   - conda-forge
   - defaults
@@ -13,3 +13,5 @@ dependencies:
     - coloredlogs
     - matplotlib
     - pyro4
+    - git+git://github.com/HumanCompatibleAI/imitation@master#egg=imitation
+    - basalt_utils/

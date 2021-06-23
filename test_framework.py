@@ -23,6 +23,7 @@ EVALUATION_THREAD_COUNT = 1
 # EVALUATION CODE  #
 ####################
 
+
 def main():
     agent = MineRLBehavioralCloningAgent()
     agent.load_agent()
