@@ -50,7 +50,7 @@ to get baselines to work]
        * **Create your new conda environment**
 
             ```sh
-            conda env create -f environment.yml 
+            conda-env create -f environment.yml
             conda activate basalt
             ```
 
