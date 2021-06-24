@@ -65,7 +65,7 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
 1.  **Clone the github repository** or press the "Use this Template" button on GitHub!
 
     ```
-    git clone https://github.com/minerllabs/basalt_competition_submission_template.git
+    git clone https://github.com/minerllabs/basalt_competition_baseline_submissions.git
     ```
 
 2. **Install** the Java JDK! **Make sure you have the [JDK 8 installed first](http://minerl.io/docs/tutorials/getting_started.html)!**
