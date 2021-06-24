@@ -35,7 +35,6 @@ def main():
 
     # Ensure that videos are closed properly
 
-    agent.run_agent_on_episode(Episode(env))
     @atexit.register
     def cleanup_env():
         env.close()
