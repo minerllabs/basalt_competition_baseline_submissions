@@ -8,13 +8,14 @@ import minerl
 from basalt_baselines.bc import bc_baseline, WRAPPERS as bc_wrappers
 import numpy as np
 from test_submission_code import MineRLAgent, Episode, EpisodeDone, MineRLBehavioralCloningAgent
+from minerl.herobraine.wrappers import downscale_wrapper
 from basalt_utils.utils import wrap_env
 import torch as th
 # import coloredlogs
 #coloredlogs.install(logging.DEBUG)
 
 
-MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLBasaltFindCave-v0')
+MINERL_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLBasaltFindCaveHighRes-v0')
 MINERL_MAX_EVALUATION_EPISODES = int(os.getenv('MINERL_MAX_EVALUATION_EPISODES', 1))
 # We only use one evaluation thread
 EVALUATION_THREAD_COUNT = 1
@@ -32,6 +33,11 @@ def main():
     assert EVALUATION_THREAD_COUNT > 0
 
     env = gym.make(MINERL_GYM_ENV)
+    # Bit of sanity check
+    if env.observation_space['pov'].shape[0] != 1024:
+        raise RuntimeError('The MineRL environment should be a "HighRes" variant.')
+    # Apply downscale wrapper to turn (1024, 1024) observations into (64, 64)
+    env = downscale_wrapper.DownscaleWrapper(env)
 
     # Ensure that videos are closed properly
 
