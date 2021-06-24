@@ -275,9 +275,9 @@ def sigusr1_handler(signum, stackframe):
 
 if __name__ == '__main__':
     parser = Parser(PERFORMANCE_DIRECTORY,
-                    allowed_environment=MINERL_GYM_ENV,
+                    allowed_environment=None,
                     maximum_instances=MAX_ALLOWED_INSTANCES,
-                    maximum_steps=MAX_ALLOWED_STEPS,
+                    maximum_steps=None,
                     raise_on_error=True,
                     no_entry_poll_timeout=NO_NEW_ENTRY_POLL_TIMEOUT,
                     submission_timeout=SUBMISSION_TIMEOUT,
