@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - python=3.7
+  - nomkl
   - pip
   - py-opencv
   - cudatoolkit=10.0 # Remove this (put behind the comment line) if not on a GPU machine
