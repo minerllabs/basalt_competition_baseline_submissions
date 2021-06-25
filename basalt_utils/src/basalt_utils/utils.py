@@ -6,7 +6,7 @@ import warnings
 import os
 import traceback
 from stable_baselines3.common.utils import get_device
-
+from minerl.data import BufferedBatchIter
 
 class DummyEnv(gym.Env):
     """
@@ -195,10 +195,10 @@ def create_data_iterator(
         wrapped_dummy_env: gym.Env,
         data_pipeline: minerl.data.DataPipeline,
         batch_size: int,
-        num_epochs: int,
-        n_traj: int,
+        buffer_size: int = 15000,
+        num_epochs: int = None,
+        num_batches: int = None,
         remove_no_ops: bool = False,
-        device: str = 'auto'
 ) -> dict:
     """
     Construct a data iterator that (1) loads data from disk, and (2) wraps it in the set of
@@ -209,24 +209,17 @@ def create_data_iterator(
     :param data_pipeline: A MineRL DataPipeline object that can handle loading data from disk
     :param batch_size: The batch size we want the iterator to produce
     :param num_epochs: The number of epochs we want the underlying iterator to run for
-    :param n_traj: The number of trajectories we want to load; should be >= the batch size
+    :param num_batches: The number of batches we want the underlying iterator to run for
     :param remove_no_ops: Whether to remove transitions with no-op demonstrator actions from batches
     as they are generated. For now, this corresponds to all-zeros.
 
     :yield: Wrapped observations and actions in a dict with the keys "obs", "acts", "rews",
          "next_obs", "dones".
     """
-
-    if num_epochs is None:
-        num_epochs = 100
-        print("Training with an undefined number of epochs (defined number of batches), using 100-epoch data iterator")
-    if n_traj is not None:
-        assert n_traj >= batch_size, "You need to run with more trajectories than your batch size"
-    tensor_device = get_device(device)
-    for current_obs, action, reward, next_obs, done in data_pipeline.batch_iter(batch_size=batch_size,
-                                                                                num_epochs=num_epochs,
-                                                                                seq_len=1):
-                                                                                #epoch_size=n_traj):
+    buffered_iterator = BufferedBatchIter(data_pipeline, buffer_target_size=buffer_size)
+    for current_obs, action, reward, next_obs, done in buffered_iterator.buffered_batch_iter(batch_size=batch_size,
+                                                                                             num_epochs=num_epochs,
+                                                                                             num_batches=num_batches):
         wrapped_obs = optional_observation_map(wrapped_dummy_env,
                                                recursive_squeeze(current_obs))
         wrapped_next_obs = optional_observation_map(wrapped_dummy_env,
