@@ -66,6 +66,7 @@ def default_config():
     # Note that `batch_size` needs to be less than the number of trajectories available for the task you're training on
     batch_size = 32
     n_traj = None
+    buffer_size = 15000
     lr = 1e-4
     _ = locals()
     del _
@@ -118,7 +119,8 @@ def test_bc(task_name, data_root, wrappers, test_policy_path, test_n_rollouts, s
 @bc_baseline.capture
 def train_bc(task_name, batch_size, data_root, wrappers, train_epochs, n_traj, lr,
              policy_class, train_batches, log_interval, save_dir, policy_filename,
-             use_rollout_callback, callback_batch_interval, callback_rollouts, save_videos):
+             use_rollout_callback, callback_batch_interval, callback_rollouts, save_videos,
+             buffer_size):
 
     # This code is designed to let you either train for a fixed number of batches, or for a fixed number of epochs
     assert train_epochs is None or train_batches is None, \
@@ -149,7 +151,12 @@ def train_bc(task_name, batch_size, data_root, wrappers, train_epochs, n_traj, l
     # (1) Applies all observation and action transformations specified by the wrappers in `wrappers`, and
     # (2) Calls `np.squeeze` recursively on all the nested dict spaces to remove the sequence dimension, since we're
     #     just doing single-frame BC here
-    data_iter = utils.create_data_iterator(wrapped_env, data_pipeline, batch_size, train_epochs, n_traj)
+    data_iter = utils.create_data_iterator(wrapped_env,
+                                           data_pipeline=data_pipeline,
+                                           batch_size=batch_size,
+                                           num_epochs=train_epochs,
+                                           num_batches=train_batches,
+                                           buffer_size=buffer_size)
     if policy_class == SpaceFlatteningActorCriticPolicy:
         policy = policy_class(observation_space=wrapped_env.observation_space,
                               action_space=wrapped_env.action_space,
