@@ -1,7 +1,7 @@
 {
   "challenge_id": "neurips-2021-minerl-basalt-competition",
   "authors": ["aicrowd-bot"],
-  "description": "Test Model for MineRL BASALT Challenge",
-  "tags": ["FindCave", "MakeWaterfall", "CreateVillageAnimalPen", "BuildVillageHouse"],
+  "description": "Behavioral Cloning Baseline Model",
+  "tags": ["FindCave"],
   "gpu": false
 }
