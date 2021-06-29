@@ -104,6 +104,10 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
 
     * **Apt Packages** If your training procedure or agent depends on specific Debian (Ubuntu, etc.) packages, add them to `apt.txt`.
 
+Note: Some users reported having issues installing this set of dependencies on Mac, and hit some variant of [this error](https://stackoverflow.com/questions/53014306/error-15-initializing-libiomp5-dylib-but-found-libiomp5-dylib-already-initial). Our 
+current belief is that this is a system-level setup issue, and there is not a single solution that works for all Mac OS versions and CUDA versions, 
+which is why we do not provide a specific suggested workaround here. 
+
 These files are used to construct both the **local and AICrowd docker containers** in which your agent will train. 
 
 If above are too restrictive for defining your environment, see [this Discourse topic for more information](https://discourse.aicrowd.com/t/how-to-specify-runtime-environment-for-your-submission/2274).
