@@ -69,7 +69,6 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
     ```
 
 2. **Install** the Java JDK! **Make sure you have the [JDK 8 installed first](http://minerl.io/docs/tutorials/getting_started.html)!**
-    ```
     -> Go to http://minerl.io/docs/tutorials/getting_started.html
 
 
@@ -82,18 +81,17 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
      Make sure at least version `4.5.11`  of `anaconda` is installed (By following instructions [here](https://www.anaconda.com/download)). 
      
      Also, if you are not on a machine with NVIDIA drivers that can support `cudatoolkit=10.2`, remove that dependency 
-     from the `environment.yml` file before trying to install
+     from the `environment.yml` file before trying to install. Then:
      
-     Then:
-       * **Create your new conda environment**
+      * **Create your new conda environment**
 
             ```sh
             conda-env create -f environment.yml
             conda activate basalt
             ```
             
-            This will install the `minerl` environment (containing all of the competition environments), as well as 
-            dependencies used in the training of the baselines themselves. 
+          This will install the `minerl` environment (containing all of the competition environments), as well as 
+          dependencies used in the training of the baselines themselves. 
 
       * **Your code specific dependencies**
         Add your own dependencies to the `environment.yml` file. **Remember to add any additional channels**. PyTorch requires the channel `pytorch`, for example.
