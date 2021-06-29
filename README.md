@@ -84,8 +84,8 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
      from the `environment.yml` file before trying to install. Then:
      
       * **Create your new conda environment**
-
-            ```sh
+       Use the following command: 
+            ```
             conda-env create -f environment.yml
             conda activate basalt
             ```
