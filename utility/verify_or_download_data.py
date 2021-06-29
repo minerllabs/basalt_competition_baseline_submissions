@@ -28,6 +28,6 @@ if __name__ == "__main__":
 
     if should_download:
         print("Attempting to download the dataset...")
-        minerl.data.download(data_dir)
+        minerl.data.download(directory=data_dir, competition="basalt")
 
     print("Data verified! A+!")
