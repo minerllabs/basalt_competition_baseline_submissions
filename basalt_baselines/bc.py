@@ -3,7 +3,6 @@ import minerl
 import namesgenerator
 from sacred import Experiment
 import basalt_utils.wrappers as wrapper_utils
-from stable_baselines3.common.torch_layers import NatureCNN
 from minerl.herobraine.wrappers.video_recording_wrapper import VideoRecordingWrapper
 from basalt_utils.sb3_compat.policies import SpaceFlatteningActorCriticPolicy
 from basalt_utils.sb3_compat.cnns import MAGICALCNN
@@ -73,6 +72,10 @@ def default_config():
 
 @bc_baseline.config
 def default_save_dir(save_dir_base, save_dir, task_name):
+    """
+    Calculates a save directory by combining the base `save_dir` ("results" by default) with
+    the task name and a timestamp that contains both the time and a random name
+    """
     if save_dir is None:
         save_dir = os.path.join(save_dir_base, task_name, make_unique_timestamp())
     _ = locals()
@@ -81,6 +84,13 @@ def default_save_dir(save_dir_base, save_dir, task_name):
 
 @bc_baseline.named_config
 def normal_policy_class():
+    """
+    This is a sacred named_config, which means that when `normal_policy_class` is added as a parameter
+    to a call of this experiment, the policy class will be set to ActorCriticCnnPolicy
+
+    "Normal" here is just used to mean the default CNN policy from Stable Baselines, rather than the one explicitly designed
+    to deal with multimodal action spaces (SpaceFlatteningActorCriticPolicy)
+    """
     policy_class = ActorCriticCnnPolicy
     _ = locals()
     del _
@@ -95,11 +105,12 @@ def main(mode):
 
 
 @bc_baseline.capture
-def test_bc(task_name, data_root, wrappers, test_policy_path, test_n_rollouts, save_videos, save_dir):
+def test_bc(task_name, data_root, wrappers, test_policy_path, test_n_rollouts, save_dir):
     os.makedirs(save_dir, exist_ok=True)
 
-    if save_videos:
-        wrappers = [(VideoRecordingWrapper, {'video_directory':
+    # Add a wrapper to the environment that records video and saves it in the
+    # the `save_dir` we have constructed for this run.
+    wrappers = [(VideoRecordingWrapper, {'video_directory':
                                                  os.path.join(save_dir, 'videos')})] + wrappers
     data_pipeline, wrapped_env = utils.get_data_pipeline_and_env(task_name, data_root, wrappers, dummy=False)
     vec_env = DummyVecEnv([lambda: wrapped_env])
