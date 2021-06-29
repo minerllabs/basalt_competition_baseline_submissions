@@ -135,7 +135,7 @@ def train_bc(task_name, batch_size, data_root, wrappers, train_epochs, n_traj, l
     assert train_epochs is None or train_batches is None, \
         "Only one of train_batches or train_epochs should be set"
     assert not (train_batches is None and train_epochs is None), \
-        "You cannot have both train_epochs and train_epochs set to None"
+        "You cannot have both train_batches and train_epochs set to None"
 
     # If you've set the `save_videos` flag, add a VideoRecordingWrapper with a directory set
     # to the current `save_dir` to the environment wrappers
