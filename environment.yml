@@ -13,6 +13,7 @@ dependencies:
     - --extra-index-url https://pypi.org/simple
     - minerl
     - crowdai_api
+    - aicrowd-repo2docker
     - coloredlogs
     - matplotlib
     - namesgenerator
