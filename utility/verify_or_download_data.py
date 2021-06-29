@@ -5,6 +5,7 @@ import os
 if __name__ == "__main__":
     data_dir = os.getenv('MINERL_DATA_ROOT', 'data')
     data_dir = 'data' if not data_dir else data_dir
+    BASALT_GYM_ENV = os.getenv('MINERL_GYM_ENV', 'MineRLBasaltFindCave-v0')
 
     print("Verifying (and downloading) MineRL dataset..\n"
           "\t**If you do not want to use the data**:\n\t\t run the local evaluation scripts with `--no-data`\n"
@@ -14,7 +15,7 @@ if __name__ == "__main__":
     print("Data directory is {}".format(data_dir))
     should_download = True
     try:
-        data = minerl.data.make('MineRLObtainDiamondVectorObf-v0', data_dir=data_dir)
+        data = minerl.data.make(BASALT_GYM_ENV, data_dir=data_dir)
         assert len(data._get_all_valid_recordings(data.data_dir)) > 0
         should_download = False
     except FileNotFoundError:
@@ -23,7 +24,7 @@ if __name__ == "__main__":
     except RuntimeError:
         print("The data contained in your data directory is out of date! data_dir={}".format(data_dir))
     except AssertionError:
-        print("No MineRLObtainDiamond-v0 data found. Did the data really download correctly?" )
+        print(f"No {BASALT_GYM_ENV} data found. Did the data really download correctly?" )
 
     if should_download:
         print("Attempting to download the dataset...")
