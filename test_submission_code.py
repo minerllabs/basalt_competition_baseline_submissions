@@ -90,7 +90,7 @@ class MineRLBehavioralCloningAgent(MineRLAgent):
         done = False
         while not done:
             # TODO this is currently erroring
-            action, _, _ = self.policy.forward(th.from_numpy(obs.copy()).unsqueeze(0))
+            action, _, _ = self.policy.forward(th.from_numpy(obs.copy()).unsqueeze(0).to(get_device('auto')))
             try:
                 obs, reward, done, _ = single_episode_env.step(np.squeeze(action.numpy()))
             except EpisodeDone:
