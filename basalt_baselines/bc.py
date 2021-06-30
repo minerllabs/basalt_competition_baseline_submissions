@@ -6,6 +6,7 @@ import basalt_utils.wrappers as wrapper_utils
 from minerl.herobraine.wrappers.video_recording_wrapper import VideoRecordingWrapper
 from basalt_utils.sb3_compat.policies import SpaceFlatteningActorCriticPolicy
 from basalt_utils.sb3_compat.cnns import MAGICALCNN
+from basalt_utils.wrappers import SaveObsAndActions
 from basalt_utils.callbacks import BatchEndIntermediateRolloutEvaluator, MultiCallback, BCModelSaver
 from stable_baselines3.common.policies import ActorCriticCnnPolicy
 from stable_baselines3.common.vec_env import DummyVecEnv
@@ -113,7 +114,10 @@ def test_bc(task_name, data_root, wrappers, test_policy_path, test_n_rollouts, s
     # Add a wrapper to the environment that records video and saves it in the
     # the `save_dir` we have constructed for this run.
     wrappers = [(VideoRecordingWrapper, {'video_directory':
-                                                 os.path.join(save_dir, 'videos')})] + wrappers
+                                             os.path.join(save_dir, 'videos')}),
+                (SaveObsAndActions, {'save_dir':
+                                         os.path.join(save_dir, 'obs_and_actions')})] + wrappers
+
     data_pipeline, wrapped_env = utils.get_data_pipeline_and_env(task_name, data_root, wrappers, dummy=False)
     vec_env = DummyVecEnv([lambda: wrapped_env])
     policy = th.load(test_policy_path, map_location=th.device(get_device('auto')))
@@ -144,7 +148,9 @@ def train_bc(task_name, batch_size, data_root, wrappers, train_epochs, n_traj, l
     # to the current `save_dir` to the environment wrappers
     if save_videos:
         wrappers = [(VideoRecordingWrapper, {'video_directory':
-                                                 os.path.join(save_dir, 'videos')})] + wrappers
+                                                 os.path.join(save_dir, 'videos')}),
+                    (SaveObsAndActions, {'save_dir':
+                                            os.path.join(save_dir, 'obs_and_actions')})] + wrappers
 
     # This `get_data_pipeline_and_env` utility is designed to be shared across multiple baselines
     # It takes in a task name, data root, and set of wrappers and returns
