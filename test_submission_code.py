@@ -89,9 +89,11 @@ class MineRLBehavioralCloningAgent(MineRLAgent):
         obs = single_episode_env.reset()
         done = False
         while not done:
-            # TODO this is currently erroring
+
             action, _, _ = self.policy.forward(th.from_numpy(obs.copy()).unsqueeze(0).to(get_device('auto')))
             try:
+                if action.device.type == 'cuda':
+                    action = action.cpu()
                 obs, reward, done, _ = single_episode_env.step(np.squeeze(action.numpy()))
             except EpisodeDone:
                 done = True
