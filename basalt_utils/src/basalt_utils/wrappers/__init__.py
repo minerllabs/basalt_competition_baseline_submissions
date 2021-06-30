@@ -4,3 +4,4 @@ from .space_flattening_wrapper import ActionFlatteningWrapper, ObservationFlatte
 from .frame_skip import FrameSkip
 from .anssi_wrapper import AnssiActionShaping
 from .enum_wrapper import EnumStrToIntWrapper
+from .save_obs_and_actions import SaveObsAndActions
