@@ -104,18 +104,27 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
 
     * **Apt Packages** If your training procedure or agent depends on specific Debian (Ubuntu, etc.) packages, add them to `apt.txt`.
     
-    * **xvfb** If you're running the test code on a machine that doesn't have a native display (like a headless linux server, 
-    we recommend installing `xvfb` and running code according to the pattern of `xvfb-run -a python test_framework.py`)
-
-Note: Some users reported having issues installing this set of dependencies on Mac, and hit some variant of [this error](https://stackoverflow.com/questions/53014306/error-15-initializing-libiomp5-dylib-but-found-libiomp5-dylib-already-initial). Our 
-current belief is that this is a system-level setup issue, and there is not a single solution that works for all Mac OS versions and CUDA versions, 
-which is why we do not provide a specific suggested workaround here. 
-
 
 
 These files are used to construct both the **local and AICrowd docker containers** in which your agent will train. 
 
 If above are too restrictive for defining your environment, see [this Discourse topic for more information](https://discourse.aicrowd.com/t/how-to-specify-runtime-environment-for-your-submission/2274).
+
+### Common Setup Issues 
+- Some users reported having issues installing this set of dependencies on Mac, and hit some variant of [this error](https://stackoverflow.com/questions/53014306/error-15-initializing-libiomp5-dylib-but-found-libiomp5-dylib-already-initial). Our 
+current belief is that this is a system-level setup issue, and there is not a single solution that works for all Mac OS versions and CUDA versions, 
+which is why we do not provide a specific suggested workaround here. 
+- If you're running the test code on a machine that doesn't have a native display (like a headless linux server
+you're connecting to via SSH), we recommend installing `xvfb` and running code according to the pattern 
+of `xvfb-run -a python test_framework.py`). If you hit an error that resembles the following, 
+we recommend following the instructions in [this blog post](https://davidsanwald.github.io/2016/11/13/building-tensorflow-with-gpu-support.html) for installing 
+CUDA without GL options. 
+```
+There was an error with Malmo"/"No OpenGL context found"/"Couldn't set pixel formal"
+```
+
+
+
 
 ## What should my code structure be like ?
 
