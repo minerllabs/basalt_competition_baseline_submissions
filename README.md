@@ -103,10 +103,15 @@ You specify tasks you want to submit agent for with `aicrowd.json` file, `tags` 
     * **Pip Packages** If you need pip packages (not on conda), you can add them to the `environment.yml` file (see the currently populated version):
 
     * **Apt Packages** If your training procedure or agent depends on specific Debian (Ubuntu, etc.) packages, add them to `apt.txt`.
+    
+    * **xvfb** If you're running the test code on a machine that doesn't have a native display (like a headless linux server, 
+    we recommend installing `xvfb` and running code according to the pattern of `xvfb-run -a python test_framework.py`)
 
 Note: Some users reported having issues installing this set of dependencies on Mac, and hit some variant of [this error](https://stackoverflow.com/questions/53014306/error-15-initializing-libiomp5-dylib-but-found-libiomp5-dylib-already-initial). Our 
 current belief is that this is a system-level setup issue, and there is not a single solution that works for all Mac OS versions and CUDA versions, 
 which is why we do not provide a specific suggested workaround here. 
+
+
 
 These files are used to construct both the **local and AICrowd docker containers** in which your agent will train. 
 
