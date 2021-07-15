@@ -159,15 +159,15 @@ The `aicrowd.json` of each submission should contain the following content:
   "challenge_id": "neurips-2021-minerl-basalt-competition",
   "authors": ["your-aicrowd-username"],
   "description": "sample description about your awesome agent",
-  "tags": ["FindCave", "MakeWaterfall", "CreateVillageAnimalPen", "BuildVillageHouse"],
+  "tags": "FindCave",
   "license": "MIT",
-  "gpu": true
+  "gpu": false
 }
 ```
 
 This JSON is used to map your submission to the said challenge, so please remember to use the correct `challenge_id` as specified above.
 
-You can specify which tasks you want to be re-evaluated with the `tags` field by specifying the list of tags. If a task is not included in this list, your current submission for that task will _not_ be updated.
+You **need to** specify the task of the submission with the `tags` field with one of the following: `{"FindCave", "MakeWaterfall", "CreateVillageAnimalPen", "BuildVillageHouse"}`. You need to create one submission per task to cover all tasks.
 
 Please specify if your code will use a GPU or not for the evaluation of your model. If you specify `true` for the GPU, a **NVIDIA Tesla K80 GPU** will be provided and used for the evaluation.
 
