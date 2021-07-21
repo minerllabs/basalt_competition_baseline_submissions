@@ -193,7 +193,7 @@ git remote add aicrowd git@gitlab.aicrowd.com:<YOUR_AICROWD_USER_NAME>/basalt_co
 git push aicrowd master
 
 # Create a tag for your submission and push
-git tag -am "submission-v0.1" submission-v0.1
+git tag submission-v0.1
 git push aicrowd master
 git push aicrowd submission-v0.1
 
