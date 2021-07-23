@@ -80,7 +80,7 @@ class MineRLAgent():
 class MineRLBehavioralCloningAgent(MineRLAgent):
     def load_agent(self):
         # TODO not sure how to get us to be able to load the policy from the right agent here
-        self.policy = th.load("train/trained_policy.pt", map_location=th.device(get_device('auto')))
+        self.policy = th.load("train/{MINERL_TASK_ENV_NAME_...}.pt", map_location=th.device(get_device('auto')))
         self.policy.eval()
 
     def run_agent_on_episode(self, single_episode_env : Episode):
