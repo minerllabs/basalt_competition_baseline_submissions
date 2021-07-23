@@ -3,6 +3,7 @@ import torch as th
 from basalt_baselines.bc import bc_baseline, WRAPPERS as bc_wrappers
 from stable_baselines3.common.utils import get_device
 import numpy as np
+import os 
 
 class EpisodeDone(Exception):
     pass
@@ -80,7 +81,7 @@ class MineRLAgent():
 class MineRLBehavioralCloningAgent(MineRLAgent):
     def load_agent(self):
         # TODO not sure how to get us to be able to load the policy from the right agent here
-        self.policy = th.load("train/{MINERL_TASK_ENV_NAME_...}.pt", map_location=th.device(get_device('auto')))
+        self.policy = th.load(f"train/{os.getenv("MINERL_TASK_ENV_NAME")}.pt", map_location=th.device(get_device('auto')))
         self.policy.eval()
 
     def run_agent_on_episode(self, single_episode_env : Episode):
