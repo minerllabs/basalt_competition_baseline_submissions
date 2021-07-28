@@ -7,7 +7,7 @@ import gym
 import minerl
 from utility.parser import Parser
 from basalt_baselines.bc import bc_baseline
-
+import cv2
 
 import coloredlogs
 coloredlogs.install(logging.DEBUG)
@@ -38,11 +38,23 @@ parser = Parser(
 )
 
 
+def play_video(arr):
+    # Check if camera opened successfully
+    for frame in arr:
+        # Display the resulting frame
+        cv2.imshow('Frame', frame)
+        # Press Q on keyboard to  exit
+        if cv2.waitKey(25) & 0xFF == ord('q'):
+            break
+    # Closes all the frames
+    cv2.destroyAllWindows()
+
 def basic_train():
     """
     This function will be called for training phase.
     This should produce and save same files you upload during your submission.
     """
+    aicrowd_helper.training_start()
     # How to sample minerl data is document here:
     # http://minerl.io/docs/tutorials/data_sampling.html
     data = minerl.data.make('MineRLBasaltFindCave-v0', data_dir=MINERL_DATA_ROOT)
@@ -51,10 +63,12 @@ def basic_train():
     env = gym.make('MineRLBasaltFindCave-v0')
 
     # For an example, lets just run one episode of MineRL for training
-    obs = env.reset()
+    _ = env.reset()
     done = False
+    video_frames = []
     while not done:
         obs, reward, done, info = env.step(env.action_space.sample())
+        video_frames.append(obs['pov'])
         # Do your training here
 
         # To get better view in your training phase, it is suggested
@@ -64,7 +78,12 @@ def basic_train():
         # To fetch latest information from instance manager, you can run below when you want to know the state
         #>> parser.update_information()
         #>> print(parser.payload)
-
+    video_array = np.array(video_frames, dtype=np.uint8)
+    play_video(video_array)
+    should_proceed = input(f"You will be asked to watch this video of size {len(video_frames)}.Press Y to play it?")
+    should_proceed = input(f"Watch this video of size {len(video_frames)}. Should we continue (Y/N)?")
+    if should_proceed != "Y":
+        raise ValueError
     # Save trained model to train/ directory
     # For a demonstration, we save some dummy data.
     np.save("./train/parameters.npy", np.random.random((10,)))
@@ -75,12 +94,9 @@ def basic_train():
 
 
 def main():
+    basic_train()
     # Documentation for BC Baseline can be found in train_bc.py
     # TODO make this configurable once we have multiple baselines
-    TRAINING_EXPERIMENT = bc_baseline
-    TRAINING_EXPERIMENT.run(config_updates={'data_root': MINERL_DATA_ROOT,
-                                            'task_name': BASALT_GYM_ENV,
-                                            'train_batches': 10,
-                                            'save_dir': "train"})
+
 if __name__ == "__main__":
     main()
