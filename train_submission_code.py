@@ -64,26 +64,27 @@ def basic_train():
 
     # For an example, lets just run one episode of MineRL for training
     _ = env.reset()
-    done = False
-    video_frames = []
-    while not done:
-        obs, reward, done, info = env.step(env.action_space.sample())
-        video_frames.append(obs['pov'])
-        # Do your training here
+    for i in range(5):
+        done = False
+        video_frames = []
+        while not done:
+            obs, reward, done, info = env.step(env.action_space.sample())
+            video_frames.append(obs['pov'])
+            # Do your training here
 
-        # To get better view in your training phase, it is suggested
-        # to register progress continuously, example when 54% completed
-        # aicrowd_helper.register_progress(0.54)
+            # To get better view in your training phase, it is suggested
+            # to register progress continuously, example when 54% completed
+            # aicrowd_helper.register_progress(0.54)
 
-        # To fetch latest information from instance manager, you can run below when you want to know the state
-        #>> parser.update_information()
-        #>> print(parser.payload)
-    video_array = np.array(video_frames, dtype=np.uint8)
-    play_video(video_array)
-    should_proceed = input(f"You will be asked to watch this video of size {len(video_frames)}.Press Y to play it?")
-    should_proceed = input(f"Watch this video of size {len(video_frames)}. Should we continue (Y/N)?")
-    if should_proceed != "Y":
-        raise ValueError
+            # To fetch latest information from instance manager, you can run below when you want to know the state
+            #>> parser.update_information()
+            #>> print(parser.payload)
+        video_array = np.array(video_frames, dtype=np.uint8)
+        play_video(video_array)
+        _ = input(f"You will be asked to watch this video of size {len(video_frames)}.Press Y to play it?")
+        should_proceed = input(f"Watch this video of size {len(video_frames)}. Should we continue (Y/N)?")
+        if should_proceed != "Y":
+            raise ValueError
     # Save trained model to train/ directory
     # For a demonstration, we save some dummy data.
     np.save("./train/parameters.npy", np.random.random((10,)))
