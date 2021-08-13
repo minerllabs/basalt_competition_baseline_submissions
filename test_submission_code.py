@@ -74,9 +74,14 @@ class MineRLAgent():
         # YOUR CODE GOES HERE
         _ = single_episode_env.reset()
         done = False
+        steps = 0
+        min_steps = 500
         while not done:
             random_act = single_episode_env.action_space.sample()
+            if steps < min_steps and random_act['equip'] == 'snowball':
+                random_act['equip'] = 'air'
             single_episode_env.step(random_act)
+            steps += 1
 
 class MineRLBehavioralCloningAgent(MineRLAgent):
     def load_agent(self):
