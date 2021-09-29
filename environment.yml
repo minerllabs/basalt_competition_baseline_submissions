@@ -19,5 +19,5 @@ dependencies:
     - namesgenerator
     - torchvision
     - pyro4
-    - git+git://github.com/HumanCompatibleAI/imitation@27fdc93a680211bf25c9403de5fdc5ccce428baa#egg=imitation
+    - git+git://github.com/HumanCompatibleAI/imitation@1ebbf513b525eeb1bbc323da858e60a8941ccd1a#egg=imitation
     - ./basalt_utils
